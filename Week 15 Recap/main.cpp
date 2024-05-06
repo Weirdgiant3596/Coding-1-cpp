@@ -1,59 +1,88 @@
 #include <iostream>
-#include <ctime>
-#include <cstdlib> 
-#include <string> 
+#include <string>
 #include <vector>
+#include <ctime>
+#include <cstdlib>
 using namespace std;
 
-string askYesNo(string question) {
-    string answer;
-    cout << question << endl;
-    cin >> answer;
-    while(answer != "yes" && answer != "no" && answer != "y" && answer != "n") {
-        cout << "Invalid answer! Please answer with yes/no or y/n." << endl;
-        cin >> answer;
+class robot{
+private:
+    // data members (variable)
+    string name;
+    int charge;
+public:
+    // member functions (functions)}
+    void status() {
+        cout << "[name: " << name << ", charge: " << charge << "]\n";
     }
-    return answer;
-}
 
-int RollDie(int sides) {
-    return rand() % sides + 1;
-}
-    
+    // a constructor runs when a new instance of a class is created.
+    // it always needs to be named the same as the class.
+    robot(string givenName = "Robot", int givenCharge = 10) {
+        cout << "[The constructor has been called!]\n";
+        name = givenName;
+        charge = givenCharge;
+    }
+
+    //setters
+    void SetName (string givenName) {
+        if(givenName.size() < 15){
+            name = givenName;
+        }
+        else {
+            cout << "Error, names must be less than 15 characters./n";
+        }
+    }
+    void SetCharge(int givenCharge) {
+        if(givenCharge > 0) {
+            charge = givenCharge;
+        }
+        else{
+            charge = 0;
+        }
+    }
+    // getters
+    string GetName() {return name;}
+    int GetCharge() {return charge;}
+
+};
+
 int main() {
-    cout << "Hello Adventurer!\n";
-    bool alive = true;
-    int health = 10;
-    int gold = 0;
-    int turns = 0;
-    
-    do {
-        string choice;
-        turns += 1;
-        choice = askYesNo("Would you like to go adventuring?");
-        if(choice == "yes" || choice == "y") {
-            cout << "You meet an orc ready to attack!\n";
-            int attack = RollDie(6);
-            int block = RollDie(6);
-            if(block >= attack) {
-                cout << "You successfully blocked the attack! You lost " << abs(attack - block) << " health points and ran away.\n";
-                gold += RollDie(3);
-                health -= (attack - block);
-            } else {
-                cout << "YOU DIED!!\n";
-                alive = false;
-            }
-        }
-    } while(alive && health > 0);
-    
-    if(alive) {
-        cout << "You are still alive! You lasted " << turns << " and found " << gold << " gold.\n";
-        if(health < 5) {
-            cout << "You should probably go to the doctor, you're pretty banged up.\n";
-        }
-    } else {
-        cout << "Your dead body was found with " << gold << " gold on it.\n";
-    }
-    return 0;
-}
+    srand(time(0));
+  cout << "Let's build some classes\n";
 
+    robot rob;
+    //rob.name = "Robbie";
+    rob.SetName("Robbie");
+    rob.SetCharge(rand() % 5 + 5);
+
+    
+    cout << "My robot's name is " << rob.GetName() << ".\n";
+    cout << "My robot's charge is " << rob.GetCharge() << ".\n";
+
+    rob.status();
+
+
+
+    robot artoo( "R2-D2");
+    artoo.status();
+
+
+    //create a vector of names with atleast four names
+    //create a vector of robots
+    //use a loop to add 10 robots to the vector, with random names and charges
+
+    vector<string> names {"Iktor", "Verena", "Rose", "Joy"};
+    vector<robot> bots;
+
+    for(int i = 0; i < 10; i++) {
+        string tempName = names[rand() % 4];
+        int tempCharge = rand() % 5 + 5;
+        bots.push_back(robot(tempName, tempCharge));
+    }
+
+    cout << "The first bot in our vector is " <<bots[0].GetName() << ".\n";
+    bots[0].status();
+
+    
+ }
